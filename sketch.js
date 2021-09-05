@@ -6,6 +6,7 @@ var chicken, chickenImage;
 var cake, cakeImage;
 var cookie, cookieImage;
 var diamond, diamondImage;
+var gold, goldImage;
 
 function preload() {
   characterImage = loadImage("images/mario.png");
@@ -16,6 +17,7 @@ function preload() {
   cakeImage = loadImage("images/cake.png");
   cookieImage = loadImage("images/cookie.png");
   diamondImage = loadImage("images/diamond.png");
+  goldImage = loadImage("images/gold.png");
 }
 
 function setup() {
@@ -51,6 +53,10 @@ function setup() {
   diamond = createSprite(995, 535);
   diamond.addImage(diamondImage);
   diamond.scale = 0.5;
+
+  gold = createSprite(1215, 200);
+  gold.addImage(goldImage);
+  gold.scale = 0.5;
 }
 
 function draw() {
@@ -103,13 +109,13 @@ function createMazeLines() {
   line(250, 500, 400, 500);
   line(400, 360, 400, 150);
   line(500, 500, 600, 500);
-  line(600, 500, 600, height - 550);
+  line(600, 500, 600, height - 480);
   line(500, 500, 500, 550);
   line(400, 500, 400, 550);
   line(500, 550, 650, 550);
   line(650, 550, 650, 400);
   line(650, 400, 900, 400);
   line(900, 400, 900, 175)
-  line(1100, 400, width, 400);
-  line(1100, 400, 1100, 50);
+  line(1100, 400, width-100, 400);
+  line(1100, 400, 1100, 100);
 }
