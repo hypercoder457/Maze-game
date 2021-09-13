@@ -25,7 +25,7 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  character = createSprite(windowWidth - 1300, height - 100);
+  character = createSprite(windowWidth - 1300, height - 70);
   character.addImage(characterImage);
   character.scale = 0.03;
 
@@ -67,30 +67,21 @@ function setup() {
 
 function draw() {
   background("red");
+  //console.log(character.x, character.y);
 
-  text(mouseX + "," + mouseY, mouseX, mouseY); // Tells us the mouse X/Y position on the screen! For dev purposes only
-  text("START ^^", 34, 628);
+  text(mouseX + "," + mouseY, mouseX, mouseY); // Tells us the mouse X/Y position on the screen! For dev purposes onl
+  push();
+  fill("lightblue");
+  text("START MAZE\nBELOW", 34, 480);
   text("Get all the items!", 17, 25);
+  text("You must get\nall items before getting the apple in the center of the\nmaze", 17, 40);
+  pop();
 
   createMazeLines();
-
-  if (keyIsDown("up")) {
-    character.y -= 3;
-  }
-
-  if (keyIsDown("down")) {
-    character.y += 3;
-  }
-
-  if (keyIsDown("left")) {
-    character.x -= 3;
-  }
-
-  if (keyIsDown("right")) {
-    character.x += 3;
-  }
-
-  if (character.x === apple.x && character.y === apple.y) {
+  
+  if (character.x === apple.x-10 && character.y) {
+    fill("blue");
+    //console.log("Reached apple");
     text("You got the apple! You now have to crack a code!", apple.x + 30, apple.y);
   }
 
@@ -124,4 +115,22 @@ function createMazeLines() {
   line(900, 400, 900, 175)
   line(1100, 400, width-100, 400);
   line(1100, 400, 1100, 100);
+}
+
+function keyPressed() {
+  if (keyIsDown(UP_ARROW)) {
+    character.y -= 7;
+  }
+
+  if (keyIsDown(DOWN_ARROW)) {
+    character.y += 7;
+  }
+
+  if (keyIsDown(LEFT_ARROW)) {
+    character.x -= 7;
+  }
+
+  if (keyIsDown(RIGHT_ARROW)) {
+    character.x += 7;
+  }
 }
