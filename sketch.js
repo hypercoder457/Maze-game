@@ -47,7 +47,7 @@ function setup() {
   cake = createSprite(745, 240);
   cake.addImage(cakeImage);
   cake.scale = 0.1;
-  
+
   cookie = createSprite(310, 570);
   cookie.addImage(cookieImage);
   cookie.scale = 0.3;
@@ -78,8 +78,8 @@ function draw() {
   pop();
 
   createMazeLines();
-  
-  if (character.x === apple.x-10 && character.y) {
+
+  if (character.x === apple.x - 10 && character.y) {
     fill("blue");
     //console.log("Reached apple");
     text("You got the apple! You now have to crack a code!", apple.x + 30, apple.y);
@@ -112,8 +112,8 @@ function createMazeLines() {
   line(500, 550, 650, 550);
   line(650, 550, 650, 400);
   line(650, 400, 900, 400);
-  line(900, 400, 900, 175)
-  line(1100, 400, width-100, 400);
+  line(900, 400, 900, 175);
+  line(1100, 400, width - 100, 400);
   line(1100, 400, 1100, 100);
 }
 
