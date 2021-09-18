@@ -8,6 +8,7 @@ var cookie, cookieImage;
 var diamond, diamondImage;
 var gold, goldImage;
 var carrot, carrotImage;
+var line1, line2, line3, line4, line5, line6, line7, line8, line9, line10;
 
 function preload() {
   characterImage = loadImage("images/mario.png");
@@ -88,33 +89,86 @@ function draw() {
   drawSprites();
 }
 
-function createMazeLines() {
+function createMazeLines() { // Only convert straight lines to sprites-for now
   // Draws all lines for the maze to the screen.
-  line(23, 604, 250, 605);
-  line(23, 510, 131, 511);
-  line(131, 511, 131, 100);
-  line(131, 100, 312, 90);
-  line(312, 90, 312, 20);
-  line(312, 20, 912, 20);
-  line(250, 655, 250, 450);
-  line(250, 360, 250, 170);
-  line(250, 170, 362, 155);
-  line(362, 155, 362, 130);
-  line(362, 130, 762, 90);
-  line(762, 90, 900, 90);
-  line(250, 360, 300, 360);
-  line(250, 500, 400, 500);
-  line(400, 360, 400, 150);
-  line(500, 500, 600, 500);
-  line(600, 500, 600, height - 480);
-  line(500, 500, 500, 550);
-  line(400, 500, 400, 550);
-  line(500, 550, 650, 550);
-  line(650, 550, 650, 400);
-  line(650, 400, 900, 400);
-  line(900, 400, 900, 175);
-  line(1100, 400, width - 100, 400);
-  line(1100, 400, 1100, 100);
+  push();
+  line1 = createSprite(135, 600, 227, 1);
+  line1.shapeColor = "black";
+
+  line2 = createSprite(75, 510, 108, 1);
+  line2.shapeColor = "black";
+
+  // TODO: Convert all of these lines to SPRITES with createSprite
+  line3 = createSprite(130, 305, 1, 410);
+  line3.shapeColor = "black";
+  
+  line4 = createSprite(221.5, 95, 181, 1);
+
+  line4.shapeColor = "black";
+
+  line5 = createSprite(312, 55, 1, 70);
+  line5.shapeColor = "black";
+
+  line6 = createSprite(612, 20, 600, 1);
+  line6.shapeColor = "black";
+
+  line7 = createSprite(250, 552.5, 1, 205);
+  line7.shapeColor = "black";
+
+  line8 = createSprite(250, 265, 1, 190);
+  line8.shapeColor = "black";
+
+
+  // TODO: Solve line curving problem with sprites! how to curve line
+  //line9 = createSprite(306, 162.5, 112, 25);
+  //line9.shapeColor = "black";
+  line(250, 170, 362, 155); // Maze line #9
+
+  line10 = createSprite(362, 142.5, 1, 25);
+  line10.shapeColor = "black";
+
+  line(362, 130, 762, 90); // Curved line problem-do not convert to a sprite for now. maze line #11
+  
+  line12 = createSprite(831, 90, 138, 1);
+  line12.shapeColor = "black";
+
+  line13 = createSprite(275, 360, 50, 1);
+  line13.shapeColor = "black";
+
+  line14 = createSprite(325, 500, 150, 1);
+  line14.shapeColor = "black";
+
+  line15 = createSprite(400, 255, 1, 210);
+  line15.shapeColor = "black";
+
+  line16 = createSprite(550, 500, 100, 1);
+  line16.shapeColor = "black";
+
+  line17 = createSprite(600, 322.5, 1, 355);
+  line17.shapeColor = "black";
+
+  line18 = createSprite(500, 525, 1, 50);
+  line18.shapeColor = "black";
+
+  line19 = createSprite(575, 550, 150, 1);
+  line19.shapeColor = "black";
+
+  line20 = createSprite(650, 475, 1,  150);
+  line20.shapeColor = "black";
+
+  line21 = createSprite(775, 400, 250, 1);
+  line21.shapeColor = "black";
+
+  line22 = createSprite(900, 287.5, 1, 225);
+  line22.shapeColor = "black";
+
+  line23 = createSprite(1180, 400, 160, 1);
+  line23.shapeColor = "black";
+
+  line24 = createSprite(1100, 250, 1, 300);
+  line24.shapeColor = "black";
+  
+  pop();
 }
 
 function keyPressed() {
