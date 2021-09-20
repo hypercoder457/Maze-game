@@ -9,6 +9,12 @@ var diamond, diamondImage;
 var gold, goldImage;
 var carrot, carrotImage;
 var line1, line2, line3, line4, line5, line6, line7, line8, line9, line10;
+var linesGroup;
+var obstacleGroup;
+var lineSprites = [];
+var foodSprites = [];
+var score = 0;
+var lives = 5;
 
 function preload() {
   characterImage = loadImage("images/mario.png");
@@ -34,7 +40,7 @@ function setup() {
   apple.addImage(appleImage);
   apple.scale = 0.4;
 
-  steak = createSprite(290, 120);
+  steak = createSprite(200, 120);
   steak.addImage(steakImage);
   steak.scale = 0.5;
 
@@ -64,11 +70,14 @@ function setup() {
   carrot = createSprite(315, 267);
   carrot.addImage(carrotImage);
   carrot.scale = 0.3;
+
+  foodSprites.push(apple, steak, bread, cake, cookie, diamond, gold, carrot);
+
+  linesGroup = new Group();
 }
 
 function draw() {
   background("red");
-  //console.log(character.x, character.y);
 
   text(mouseX + "," + mouseY, mouseX, mouseY); // Tells us the mouse X/Y position on the screen! For dev purposes onl
   push();
@@ -76,9 +85,15 @@ function draw() {
   text("START MAZE\nBELOW", 34, 480);
   text("Get all the items!", 17, 25);
   text("You must get\nall items before getting the apple in the center of the\nmaze", 17, 40);
+  text(`Score: ${score}`, 20, 90);
+  text(`Lives: ${lives}`, 20, 120);
   pop();
 
   createMazeLines();
+
+  character.setCollider("circle", 0, 0);
+  character.debug = true;
+  characterCollide();
 
   if (character.x === apple.x - 10 && character.y) {
     fill("blue");
@@ -98,12 +113,10 @@ function createMazeLines() { // Only convert straight lines to sprites-for now
   line2 = createSprite(75, 510, 108, 1);
   line2.shapeColor = "black";
 
-  // TODO: Convert all of these lines to SPRITES with createSprite
   line3 = createSprite(130, 305, 1, 410);
   line3.shapeColor = "black";
-  
-  line4 = createSprite(221.5, 95, 181, 1);
 
+  line4 = createSprite(221.5, 95, 181, 1);
   line4.shapeColor = "black";
 
   line5 = createSprite(312, 55, 1, 70);
@@ -112,7 +125,7 @@ function createMazeLines() { // Only convert straight lines to sprites-for now
   line6 = createSprite(612, 20, 600, 1);
   line6.shapeColor = "black";
 
-  line7 = createSprite(250, 552.5, 1, 205);
+  line7 = createSprite(250, 552.5, 1, 180);
   line7.shapeColor = "black";
 
   line8 = createSprite(250, 265, 1, 190);
@@ -128,7 +141,7 @@ function createMazeLines() { // Only convert straight lines to sprites-for now
   line10.shapeColor = "black";
 
   line(362, 130, 762, 90); // Curved line problem-do not convert to a sprite for now. maze line #11
-  
+
   line12 = createSprite(831, 90, 138, 1);
   line12.shapeColor = "black";
 
@@ -153,7 +166,7 @@ function createMazeLines() { // Only convert straight lines to sprites-for now
   line19 = createSprite(575, 550, 150, 1);
   line19.shapeColor = "black";
 
-  line20 = createSprite(650, 475, 1,  150);
+  line20 = createSprite(650, 475, 1, 150);
   line20.shapeColor = "black";
 
   line21 = createSprite(775, 400, 250, 1);
@@ -167,7 +180,32 @@ function createMazeLines() { // Only convert straight lines to sprites-for now
 
   line24 = createSprite(1100, 250, 1, 300);
   line24.shapeColor = "black";
+
+  lineSprites.push(line1, line2, line3, line4, line5, line6, line7, line8, line10,
+    line12, line13, line14, line15, line16, line17, line18, line19, line20, line21, line22,
+    line23, line24);
   
+  for(var i = 0; i < lineSprites.length; i++) {
+    if(lineSprites[i].isTouching(character)) {
+      character.x = windowWidth - 1300;
+      character.y = height - 70;
+      lives -= 1;
+    }
+  }
+
+  for(var j = 0; j < foodSprites.length; j++) {
+    if(foodSprites[j].isTouching(character)) {
+      score += 1;
+      foodSprites[j].destroy();
+    }
+  }
+
+  if(score === 8) {
+    line6.destroy();
+    fill("blue");
+    text("You have\nunlocked the golden\napple!", 20, 150);
+  }
+
   pop();
 }
 
@@ -187,4 +225,31 @@ function keyPressed() {
   if (keyIsDown(RIGHT_ARROW)) {
     character.x += 7;
   }
+}
+
+
+function characterCollide() {
+  // Character collision with ALL the lines.
+  character.collide(line1);
+  character.collide(line2);
+  character.collide(line3);
+  character.collide(line4);
+  character.collide(line5);
+  character.collide(line6);
+  character.collide(line7);
+  character.collide(line8);
+  character.collide(line10);
+  character.collide(line12);
+  character.collide(line13);
+  character.collide(line14);
+  character.collide(line15);
+  character.collide(line16);
+  character.collide(line17);
+  character.collide(line18);
+  character.collide(line19);
+  character.collide(line20);
+  character.collide(line21);
+  character.collide(line22);
+  character.collide(line23);
+  character.collide(line24);
 }
