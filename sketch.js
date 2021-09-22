@@ -13,8 +13,9 @@ var linesGroup;
 var obstacleGroup;
 var lineSprites = [];
 var foodSprites = [];
-var score = 0;
+var score = 9;
 var lives = 5;
+var gameState = "play";
 
 function preload() {
   characterImage = loadImage("images/mario.png");
@@ -47,6 +48,7 @@ function setup() {
   bread = createSprite(865, 50);
   bread.addImage(breadImage);
   bread.scale = 0.1;
+
   chicken = createSprite(483, 217);
   chicken.addImage(chickenImage);
   chicken.scale = 0.5;
@@ -71,7 +73,7 @@ function setup() {
   carrot.addImage(carrotImage);
   carrot.scale = 0.3;
 
-  foodSprites.push(apple, steak, bread, cake, cookie, diamond, gold, carrot);
+  foodSprites.push(apple, steak, bread, cake, cookie, diamond, gold, carrot, chicken);
 
   linesGroup = new Group();
 }
@@ -90,21 +92,16 @@ function draw() {
   pop();
 
   createMazeLines();
+  characterBehavior();
 
   character.setCollider("circle", 0, 0);
   character.debug = true;
   characterCollide();
 
-  if (character.x === apple.x - 10 && character.y) {
-    fill("blue");
-    //console.log("Reached apple");
-    text("You got the apple! You now have to crack a code!", apple.x + 30, apple.y);
-  }
-
   drawSprites();
 }
 
-function createMazeLines() { // Only convert straight lines to sprites-for now
+function createMazeLines() {
   // Draws all lines for the maze to the screen.
   push();
   line1 = createSprite(135, 600, 227, 1);
@@ -131,16 +128,12 @@ function createMazeLines() { // Only convert straight lines to sprites-for now
   line8 = createSprite(250, 265, 1, 190);
   line8.shapeColor = "black";
 
-
-  // TODO: Solve line curving problem with sprites! how to curve line
-  //line9 = createSprite(306, 162.5, 112, 25);
-  //line9.shapeColor = "black";
-  line(250, 170, 362, 155); // Maze line #9
+  line(250, 170, 362, 155);
 
   line10 = createSprite(362, 142.5, 1, 25);
   line10.shapeColor = "black";
 
-  line(362, 130, 762, 90); // Curved line problem-do not convert to a sprite for now. maze line #11
+  line(362, 130, 762, 90);
 
   line12 = createSprite(831, 90, 138, 1);
   line12.shapeColor = "black";
@@ -172,7 +165,7 @@ function createMazeLines() { // Only convert straight lines to sprites-for now
   line21 = createSprite(775, 400, 250, 1);
   line21.shapeColor = "black";
 
-  line22 = createSprite(900, 287.5, 1, 225);
+  line22 = createSprite(900, 287.5, 1, 200);
   line22.shapeColor = "black";
 
   line23 = createSprite(1180, 400, 160, 1);
@@ -184,29 +177,74 @@ function createMazeLines() { // Only convert straight lines to sprites-for now
   lineSprites.push(line1, line2, line3, line4, line5, line6, line7, line8, line10,
     line12, line13, line14, line15, line16, line17, line18, line19, line20, line21, line22,
     line23, line24);
-  
-  for(var i = 0; i < lineSprites.length; i++) {
-    if(lineSprites[i].isTouching(character)) {
-      character.x = windowWidth - 1300;
-      character.y = height - 70;
-      lives -= 1;
-    }
-  }
-
-  for(var j = 0; j < foodSprites.length; j++) {
-    if(foodSprites[j].isTouching(character)) {
-      score += 1;
-      foodSprites[j].destroy();
-    }
-  }
-
-  if(score === 8) {
-    line6.destroy();
-    fill("blue");
-    text("You have\nunlocked the golden\napple!", 20, 150);
-  }
 
   pop();
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function destroyItems() {
+  character.destroy();
+  for (var i = 0; i < lineSprites.length; i++) {
+    lineSprites[i].destroy();
+  }
+  for (var j = 0; j < foodSprites.length; j++) {
+    foodSprites[j].destroy();
+  }
+}
+
+function characterBehavior() {
+  if (gameState === "play") {
+    if (lives === 0) {
+      clear();
+      destroyItems();
+      background("gray");
+      push();
+      textSize(50);
+      fill("blue");
+      text("GAME OVER", width / 2, height / 2);
+      text("REFRESH TO START OVER\nAGAIN", width/2, (height/2)+50)
+      pop();
+    }
+
+    for (var i = 0; i < lineSprites.length; i++) {
+      if (lineSprites[i].isTouching(character)) {
+        character.x = windowWidth - 1300;
+        character.y = height - 70;
+        lives -= 1;
+      }
+    }
+
+    for (var j = 0; j < foodSprites.length; j++) {
+      if (foodSprites[j].isTouching(character)) {
+        score += 1;
+        foodSprites[j].destroy();
+      }
+    }
+
+    if (score === 7) {
+      line6.destroy();
+      fill("blue");
+      text("You have\nunlocked the golden\napple!", 20, 150);
+    }
+
+    if (score === 9) {
+      fill("blue");
+      text("You got the apple! You now have to\ncrack a code!", apple.x + 30, apple.y);
+      gameState = "end";
+    }
+  } else if (gameState === "end") {
+    //sleep(5000).then(() => {
+      //destroyItems();
+    //})
+    //background("lightblue");
+    //push();
+    //fill("blue");
+    //text("Wait for 5 seconds.....", 20, 140);
+    //pop();
+  }
 }
 
 function keyPressed() {
