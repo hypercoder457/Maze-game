@@ -13,7 +13,7 @@ var linesGroup;
 var obstacleGroup;
 var lineSprites = [];
 var foodSprites = [];
-var score = 9;
+var score = 0;
 var lives = 5;
 var gameState = "play";
 
