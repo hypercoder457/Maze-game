@@ -5,8 +5,8 @@ class WordForm {
     }
 
     display() {
-        background("lightblue");
-        this.wordInput.position(width / 2, height / 2);
-        this.submitButton.position(width / 2, (height / 2) + 100);
+        background("lightblue"); // Keep this to preserve background in all cases
+        this.wordInput.position((width / 2)-200, height / 2);
+        this.submitButton.position((width / 2)-200, (height / 2) + 20);
     }
 }

@@ -101,7 +101,8 @@ function draw() {
   character.debug = true;
   characterCollide();
 
-  if(gameState === 2) {
+  if (gameState === 2) {
+    destroyItems(); // Calling this a 2nd time works. why though?
     wordForm.display();
   }
 
@@ -193,7 +194,7 @@ function destroyItems() {
   for (var j = 0; j < foodSprites.length; j++) {
     foodSprites[j].destroy();
   }
-  for(var i = 0; i < lineSprites.length; i++) {
+  for (var i = 0; i < lineSprites.length; i++) {
     lineSprites[i].destroy();
   }
 }
@@ -206,18 +207,14 @@ function sleepFor(sleepDuration) {
 }
 
 async function endState() {
-  push();
-  fill("blue");
-  text("Wait for 5 seconds.....", 20, 140);
-  pop();
   setTimeout(() => {
     console.log("sleeping"); // Have to have this here
     // Can't have set timeout empty
   }, 5000);
   await sleepFor(6000);
-  await destroyItems();
   background("lightblue");
   await sleepFor(3000);
+  await destroyItems();
   gameState = 2;
 }
 
@@ -259,6 +256,10 @@ function characterBehavior() {
     if (score === 9) {
       fill("blue");
       text("You got the apple! You now have to\ncrack a code!", apple.x + 30, apple.y);
+      push();
+      fill("blue");
+      text("Wait for 8-10 seconds.....", 20, 140);
+      pop();
       gameState = "end";
     }
   } else if (gameState === "end") {
