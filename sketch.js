@@ -13,9 +13,10 @@ var linesGroup;
 var obstacleGroup;
 var lineSprites = [];
 var foodSprites = [];
-var score = 0;
+var score = 8;
 var lives = 5;
 var gameState = "play";
+var wordForm;
 
 function preload() {
   characterImage = loadImage("images/mario.png");
@@ -76,6 +77,8 @@ function setup() {
   foodSprites.push(apple, steak, bread, cake, cookie, diamond, gold, carrot, chicken);
 
   linesGroup = new Group();
+
+  wordForm = new WordForm();
 }
 
 function draw() {
@@ -97,6 +100,10 @@ function draw() {
   character.setCollider("circle", 0, 0);
   character.debug = true;
   characterCollide();
+
+  if(gameState === 2) {
+    wordForm.display();
+  }
 
   drawSprites();
 }
@@ -181,18 +188,37 @@ function createMazeLines() {
   pop();
 }
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 function destroyItems() {
   character.destroy();
-  for (var i = 0; i < lineSprites.length; i++) {
-    lineSprites[i].destroy();
-  }
   for (var j = 0; j < foodSprites.length; j++) {
     foodSprites[j].destroy();
   }
+  for(var i = 0; i < lineSprites.length; i++) {
+    lineSprites[i].destroy();
+  }
+}
+
+function sleepFor(sleepDuration) {
+  var now = new Date().getTime();
+  while (new Date().getTime() < now + sleepDuration) {
+    console.log("sleeping 2")
+  } // Sleep delay!
+}
+
+async function endState() {
+  push();
+  fill("blue");
+  text("Wait for 5 seconds.....", 20, 140);
+  pop();
+  setTimeout(() => {
+    console.log("sleeping"); // Have to have this here
+    // Can't have set timeout empty
+  }, 5000);
+  await sleepFor(6000);
+  await destroyItems();
+  background("lightblue");
+  await sleepFor(3000);
+  gameState = 2;
 }
 
 function characterBehavior() {
@@ -205,7 +231,7 @@ function characterBehavior() {
       textSize(50);
       fill("blue");
       text("GAME OVER", width / 2, height / 2);
-      text("REFRESH TO START OVER\nAGAIN", width/2, (height/2)+50)
+      text("REFRESH TO START OVER\nAGAIN", width / 2, (height / 2) + 50)
       pop();
     }
 
@@ -236,14 +262,7 @@ function characterBehavior() {
       gameState = "end";
     }
   } else if (gameState === "end") {
-    //sleep(5000).then(() => {
-      //destroyItems();
-    //})
-    //background("lightblue");
-    //push();
-    //fill("blue");
-    //text("Wait for 5 seconds.....", 20, 140);
-    //pop();
+    endState();
   }
 }
 
