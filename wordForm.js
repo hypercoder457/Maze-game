@@ -1,12 +1,42 @@
-class WordForm {
-    constructor() {
-        this.wordInput = createInput("Unscrambled word?");
+class Form {
+    constructor(inputPos, submitButtonPos, expectedResponse) { // These parameters are for positioning of the inputs/buttons
+        // So we can create forms like this on the fly.
+        this.input = createInput("Your answer?");
         this.submitButton = createButton("Check your answer");
+        this.inputPos = inputPos;
+        this.submitButtonPos = submitButtonPos;
+        this.expectedResponse = expectedResponse;
     }
 
     display() {
-        background("lightblue"); // Keep this to preserve background in all cases
-        this.wordInput.position((width / 2)-200, height / 2);
-        this.submitButton.position((width / 2)-200, (height / 2) + 20);
+        background(bgImage); // Keep this to preserve background in all cases
+        this.input.show();
+        this.submitButton.show();
+        this.input.position(this.inputPos.x, this.inputPos.y);
+        this.submitButton.position(this.submitButtonPos.x, this.submitButtonPos.y);
+
+        this.submitButton.mousePressed(() => {
+            this.checkAnswer();
+            console.log("submitted answer")
+        })
+    }
+
+    hide() {
+        this.input.hide();
+        this.submitButton.hide();
+    }
+
+    checkAnswer() {
+        if (this.expectedResponse === this.input.value()) {
+            this.hide(); // Not working....
+            //console.log("correct answer");
+        }
+
+        //if (exp) {
+           // push();
+            //fill("red");
+            //text("Incorrect answer. Try again!", this.inputPos.x, this.inputPos.y + 30);
+            //pop();
+        //}
     }
 }

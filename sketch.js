@@ -8,6 +8,7 @@ var cookie, cookieImage;
 var diamond, diamondImage;
 var gold, goldImage;
 var carrot, carrotImage;
+var bgImage;
 var line1, line2, line3, line4, line5, line6, line7, line8, line9, line10;
 var linesGroup;
 var obstacleGroup;
@@ -16,7 +17,7 @@ var foodSprites = [];
 var score = 8;
 var lives = 5;
 var gameState = "play";
-var wordForm;
+var form1, form2, form3;
 
 function preload() {
   characterImage = loadImage("images/mario.png");
@@ -29,6 +30,7 @@ function preload() {
   diamondImage = loadImage("images/diamond.png");
   goldImage = loadImage("images/gold.png");
   carrotImage = loadImage("images/carrot.png");
+  bgImage = loadImage("images/background.png");
 }
 
 function setup() {
@@ -78,13 +80,25 @@ function setup() {
 
   linesGroup = new Group();
 
-  wordForm = new WordForm();
+  form1 = new Form(
+    { x: 50, y: 200 },
+    { x: 50, y: 220 },
+    "16384"
+  );
+
+  form2 = new Form(
+    { x: 325, y: 115 },
+    { x: 325, y: 135 },
+    "2010"
+  );
 }
 
 function draw() {
   background("red");
-
-  text(mouseX + "," + mouseY, mouseX, mouseY); // Tells us the mouse X/Y position on the screen! For dev purposes onl
+  push();
+  fill("purple");
+  text(mouseX + "," + mouseY, mouseX, mouseY); // Tells us the mouse X/Y position on the screen! For dev purposes only
+  pop();
   push();
   fill("lightblue");
   text("START MAZE\nBELOW", 34, 480);
@@ -103,7 +117,16 @@ function draw() {
 
   if (gameState === 2) {
     destroyItems(); // Calling this a 2nd time works. why though?
-    wordForm.display();
+    form1.display();
+    form2.display();
+    push();
+    fill("black");
+    textSize(30);
+    text("Next, answer these questions!", 50, 60);
+    textSize(20)
+    text("128 times 128?", form1.inputPos.x, (form1.inputPos.y - 20));
+    text("What year was the last harry potter movie released?", form2.inputPos.x, form2.inputPos.y - 20)
+    pop();
   }
 
   drawSprites();
@@ -212,7 +235,7 @@ async function endState() {
     // Can't have set timeout empty
   }, 5000);
   await sleepFor(6000);
-  background("lightblue");
+  background(bgImage);
   await sleepFor(3000);
   await destroyItems();
   gameState = 2;
@@ -220,6 +243,8 @@ async function endState() {
 
 function characterBehavior() {
   if (gameState === "play") {
+    form1.hide();
+    form2.hide();
     if (lives === 0) {
       clear();
       destroyItems();
