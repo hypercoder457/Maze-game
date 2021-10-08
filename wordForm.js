@@ -24,12 +24,13 @@ class Form {
     hide() {
         this.input.hide();
         this.submitButton.hide();
+        console.log("hide function was called");
     }
 
     checkAnswer() {
         if (this.expectedResponse === this.input.value()) {
-            this.hide(); // Not working....
-            //console.log("correct answer");
+            this.hide();
+            console.log("correct answer");
         }
 
         //if (exp) {
