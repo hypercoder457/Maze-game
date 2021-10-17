@@ -14,7 +14,7 @@ var linesGroup;
 var obstacleGroup;
 var lineSprites = [];
 var foodSprites = [];
-var score = 8;
+var score = 0;
 var lives = 5;
 var gameState = "play";
 var form1, form2, form3;
